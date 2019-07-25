@@ -1,5 +1,7 @@
 const { requestAnimationFrame } = window
 
+const MISSILE_VELOCITY = 0.1
+
 let state = {
     userAction: '',
     clock: 0,
@@ -8,21 +10,25 @@ let state = {
         lastMove: Date.now(),
         position: 0,
     },
+    missile: 0
 }
 
-function step() {
-    requestAnimationFrame(function() {
-        // update
-        state = update(state);
-        // render
-        render(state);
-        requestAnimationFrame(step) // ?
-    })
+let lastStepTimestamp = 0
+let delta = 0
+const TIMESTEP = 1000 / 60
+function step(timestamp = 0) {
+    delta += timestamp - lastStepTimestamp
+    lastStepTimestamp = timestamp
+    while(delta >= TIMESTEP) {
+        state = update(state, TIMESTEP);
+        delta -= TIMESTEP
+    }
+    render(state);
+    requestAnimationFrame(step)
 }
 
 // Handlers
 document.body.addEventListener('keydown', function(event) {
-    console.log(event.keyCode)
     if (event.keyCode === 37) {
         state.userAction = 'left'
     }
@@ -37,10 +43,11 @@ document.body.addEventListener('keydown', function(event) {
 
 step()
 
-function update(state) {
+function update(state, delta) {
     let userAction = state.userAction
-    
+    let missile = state.missile
     let laser = state.laser
+
     if (state.userAction === 'right') {
         laser = laser + 1
         userAction = ''
@@ -49,6 +56,13 @@ function update(state) {
         laser = laser - 1
         userAction = ''
     }
+    if (state.userAction === 'fire') {
+        missile = 0
+        userAction = ''
+    }
+
+    missile = missile + MISSILE_VELOCITY
+    
 
     let invader = state.invader
     const now = Date.now()
@@ -59,7 +73,7 @@ function update(state) {
         }
     }
 
-    const nextState = {...state, laser, userAction, invader};
+    const nextState = {...state, laser, userAction, invader, missile};
     return nextState
 }
 
