@@ -12,8 +12,8 @@ let state = {
     laser: 0,
     invader: {
         lastMove: Date.now(),
-        position: 0,
-          alive: false,
+        position: [-120, 450], 
+          alive: true,
     },
     missiles: [],
 }
@@ -28,7 +28,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    log(state)
+    // log(state)
     render(state);
     requestAnimationFrame(step)
 }
@@ -45,6 +45,5 @@ document.body.addEventListener('keydown', function(event) {
         state.userAction = 'fire'
     }
 })
-
 
 step()

@@ -31,7 +31,7 @@ export function render(state) {
 
 function renderInvader(ctx, invader) {
   ctx.fillStyle = invader.alive ? 'rgb(200, 0, 0)' : 'gray'
-  ctx.fillRect(translateX(invader.position), 10, 50, 50);
+  ctx.fillRect(translateX(invader.position[0]), translateY(invader.position[1]), 50, 50);
 }
 
 function translateX(x) {
