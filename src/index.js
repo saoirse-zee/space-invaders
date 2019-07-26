@@ -15,7 +15,7 @@ let state = {
         lastMove: Date.now(),
         position: 0,
     },
-    missile: [0, 0]
+    missiles: [],
 }
 
 let lastStepTimestamp = 0
@@ -28,7 +28,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    // log(state)
+    log(state)
     render(state);
     requestAnimationFrame(step)
 }
@@ -51,7 +51,7 @@ step()
 
 function update(state, delta) {
     let userAction = state.userAction
-    let missile = state.missile
+    let missiles = state.missiles
     let laser = state.laser
 
     if (state.userAction === 'right') {
@@ -63,16 +63,15 @@ function update(state, delta) {
         userAction = ''
     }
     if (state.userAction === 'fire') {
-        missile = [laser, 0]
+        missiles.push([laser, 0])
         userAction = ''
     }
 
-    missile = [
-        missile[0],
-        missile[1] + MISSILE_VELOCITY * delta,
-    ]
+    missiles = missiles.map(m => [
+        m[0],
+        m[1] + MISSILE_VELOCITY * delta,
+    ])
     
-
     let invader = state.invader
     const now = Date.now()
     if (now - state.invader.lastMove > 1000) {
@@ -82,6 +81,6 @@ function update(state, delta) {
         }
     }
 
-    const nextState = {...state, laser, userAction, invader, missile};
+    const nextState = {...state, laser, userAction, invader, missiles};
     return nextState
 }

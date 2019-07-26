@@ -23,7 +23,9 @@ export function render(state) {
   ctx.fillRect(translateX(state.invader.position), 10, 50, 50);
   
   // Missile
-  ctx.fillRect(translateX(state.missile[0]), translateY(state.missile[1]), 5, 15);
+  state.missiles.forEach(missile => {
+    ctx.fillRect(translateX(missile[0]), translateY(missile[1]), 5, 15);
+  })
   
   // Laser
   ctx.fillRect(translateX(state.laser), translateY(0), 10, 10);
