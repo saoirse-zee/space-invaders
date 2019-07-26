@@ -16,18 +16,22 @@ export function render(state) {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, CANVAS_WIDTH + CANVAS_PADDING, CANVAS_HEIGHT + CANVAS_PADDING)
   
-  ctx.fillStyle = 'rgb(200, 0, 0)';
-
   // Invader
-  ctx.fillRect(translateX(state.invader.position), 10, 50, 50);
+  renderInvader(ctx, state.invader);
   
   // Missile
+  ctx.fillStyle = 'rgb(200, 0, 0)';
   state.missiles.forEach(missile => {
     ctx.fillRect(translateX(missile[0]), translateY(missile[1]), 5, 15);
   })
   
   // Laser
   ctx.fillRect(translateX(state.laser), translateY(0), 10, 10);
+}
+
+function renderInvader(ctx, invader) {
+  ctx.fillStyle = invader.alive ? 'rgb(200, 0, 0)' : 'gray'
+  ctx.fillRect(translateX(invader.position), 10, 50, 50);
 }
 
 function translateX(x) {

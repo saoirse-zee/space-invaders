@@ -13,6 +13,7 @@ let state = {
     invader: {
         lastMove: Date.now(),
         position: 0,
+          alive: false,
     },
     missiles: [],
 }
