@@ -1,3 +1,8 @@
+import { canvas, render } from './render.js'
+import { log } from './log.js'
+
+document.body.appendChild(canvas())
+
 const { requestAnimationFrame } = window
 
 const MISSILE_VELOCITY = 0.1
@@ -23,6 +28,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
+    log(state)
     render(state);
     requestAnimationFrame(step)
 }
@@ -49,11 +55,11 @@ function update(state, delta) {
     let laser = state.laser
 
     if (state.userAction === 'right') {
-        laser = laser + 1
+        laser = laser + 10
         userAction = ''
     }
     if (state.userAction === 'left') {
-        laser = laser - 1
+        laser = laser - 10
         userAction = ''
     }
     if (state.userAction === 'fire') {
@@ -61,7 +67,7 @@ function update(state, delta) {
         userAction = ''
     }
 
-    missile = missile + MISSILE_VELOCITY
+    missile = missile + MISSILE_VELOCITY * delta
     
 
     let invader = state.invader
@@ -69,14 +75,10 @@ function update(state, delta) {
     if (now - state.invader.lastMove > 1000) {
         invader = {
             lastMove: now,
-            position: state.invader.position + 1
+            position: state.invader.position + 5
         }
     }
 
     const nextState = {...state, laser, userAction, invader, missile};
     return nextState
-}
-
-function render(state) {
-    document.body.innerText = JSON.stringify(state, null, 2)
 }
