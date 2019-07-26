@@ -1,6 +1,5 @@
-const CANVAS_WIDTH = 400;
-const CANVAS_HEIGHT = 500;
-const CANVAS_PADDING = 30;
+import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING } from './config.json'
+
 export function canvas() {
   const element = document.createElement('canvas')
   element.setAttribute('id', 'gameboard')
