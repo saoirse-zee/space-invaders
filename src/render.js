@@ -1,8 +1,11 @@
+const CANVAS_WIDTH = 400;
+const CANVAS_HEIGHT = 500;
+const CANVAS_PADDING = 30;
 export function canvas() {
   const element = document.createElement('canvas')
   element.setAttribute('id', 'gameboard')
-  element.setAttribute('width', 400)
-  element.setAttribute('height', 400)
+  element.setAttribute('width', CANVAS_WIDTH + CANVAS_PADDING)
+  element.setAttribute('height', CANVAS_HEIGHT + CANVAS_PADDING)
   return element
 }
 
@@ -12,15 +15,23 @@ export function render(state) {
 
   // Clear canvas
   ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, 400, 400)
+  ctx.fillRect(0, 0, CANVAS_WIDTH + CANVAS_PADDING, CANVAS_HEIGHT + CANVAS_PADDING)
   
-  // Invader
   ctx.fillStyle = 'rgb(200, 0, 0)';
-  ctx.fillRect(state.invader.position, 10, 50, 50);
-  
+
   // Invader
-  ctx.fillRect(state.laser, 370, 30, 10);
+  ctx.fillRect(translateX(state.invader.position), 10, 50, 50);
   
   // Missile
-  ctx.fillRect(200, 370 - state.missile, 3, 10);
+  ctx.fillRect(translateX(state.missile[0]), translateY(state.missile[1]), 5, 15);
+  
+  // Laser
+  ctx.fillRect(translateX(state.laser), translateY(0), 10, 10);
+}
+
+function translateX(x) {
+  return x + CANVAS_WIDTH / 2
+}
+function translateY(y) {
+  return CANVAS_HEIGHT - y
 }

@@ -5,7 +5,7 @@ document.body.appendChild(canvas())
 
 const { requestAnimationFrame } = window
 
-const MISSILE_VELOCITY = 0.1
+const MISSILE_VELOCITY = 0.3
 
 let state = {
     userAction: '',
@@ -15,7 +15,7 @@ let state = {
         lastMove: Date.now(),
         position: 0,
     },
-    missile: 0
+    missile: [0, 0]
 }
 
 let lastStepTimestamp = 0
@@ -28,7 +28,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    log(state)
+    // log(state)
     render(state);
     requestAnimationFrame(step)
 }
@@ -63,11 +63,14 @@ function update(state, delta) {
         userAction = ''
     }
     if (state.userAction === 'fire') {
-        missile = 0
+        missile = [laser, 0]
         userAction = ''
     }
 
-    missile = missile + MISSILE_VELOCITY * delta
+    missile = [
+        missile[0],
+        missile[1] + MISSILE_VELOCITY * delta,
+    ]
     
 
     let invader = state.invader
