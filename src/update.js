@@ -1,4 +1,4 @@
-import { MISSILE_VELOCITY } from "./config.json";
+import { MISSILE_VELOCITY, INVADER_SIZE } from "./config.json";
 
 export function update(state, delta) {
   let userAction = state.userAction;
@@ -36,8 +36,8 @@ export function update(state, delta) {
   // Detect missile collision
   missiles.forEach(m => {
     const isMissileHit = (
-      Math.abs(m[0] - invader.position[0]) < 20 &&
-      Math.abs(m[1] - invader.position[1]) < 20
+      Math.abs(m[0] - invader.position[0]) < INVADER_SIZE / 2 &&
+      Math.abs(m[1] - invader.position[1]) < INVADER_SIZE / 2
     )
     if (isMissileHit) {
       invader.alive = false
