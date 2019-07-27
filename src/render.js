@@ -13,7 +13,7 @@ export function render(state) {
   const ctx = canvas.getContext('2d');
   
   clearCanvas(ctx);
-  renderInvader(ctx, state.invader);
+  state.invaders.forEach(invader => renderInvader(ctx, invader))
   state.missiles.forEach(missile => renderMissile(ctx, missile))
   renderLaser(ctx, state.laser);
 }

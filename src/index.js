@@ -10,11 +10,21 @@ let state = {
     userAction: '',
     clock: 0,
     laser: 0,
+    invaderLastMove: Date.now(),
     invader: {
-        lastMove: Date.now(),
         position: [-120, 450], 
-          alive: true,
+        alive: true,
     },
+    invaders: [
+        {
+            position: [-120, 250],
+            alive: true,
+        },
+        {
+            position: [120, 250],
+            alive: true,
+        },
+    ],
     missiles: [],
 }
 
@@ -28,7 +38,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    // log(state)
+    log(state)
     render(state);
     requestAnimationFrame(step)
 }

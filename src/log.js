@@ -1,3 +1,3 @@
 export function log(state) {
-    console.log(state.missiles[0])
+    console.log(state.invaders[0].position)
 }
