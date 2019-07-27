@@ -35,10 +35,10 @@ function renderLaser(ctx, laser) {
   );
 }
 function renderMissile(ctx, missile) {
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = missile.alive ? 'white' : '#222'
   const SIZE = 10
-  const left = translateX(missile[0]) - SIZE / 2;
-  const top = translateY(missile[1]) - SIZE / 2;
+  const left = translateX(missile.position[0]) - SIZE / 2;
+  const top = translateY(missile.position[1]) - SIZE / 2;
   ctx.fillRect(
     left,
     top,

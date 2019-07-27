@@ -14,11 +14,22 @@ export function update(state, delta) {
     userAction = "";
   }
   if (state.userAction === "fire") {
-    missiles.push([laser, 0]);
+    missiles.push({
+      position: [laser, 0],
+      alive: true,
+    });
     userAction = "";
   }
 
-  missiles = missiles.map(m => [m[0], m[1] + MISSILE_VELOCITY * delta]);
+  missiles = missiles.map(m => (
+    {
+      ...m,
+      position: [
+        m.position[0],
+        m.position[1] + MISSILE_VELOCITY * delta,
+      ]
+    }
+  ));
 
   const now = Date.now();
   const invaderShouldMove = now - state.invader.lastMove > 1000
@@ -33,16 +44,19 @@ export function update(state, delta) {
         }
       : state.invader
 
-  // Detect missile collision
-  missiles.forEach(m => {
-    const isMissileHit = (
-      Math.abs(m[0] - invader.position[0]) < INVADER_SIZE / 2 &&
-      Math.abs(m[1] - invader.position[1]) < INVADER_SIZE / 2
-    )
-    if (isMissileHit) {
-      invader.alive = false
-    }
-  })
+  // Detect missile hit
+  missiles
+    .filter(missile => missile.alive)
+    .forEach(missile => {
+      const isMissileHit = (
+        Math.abs(missile.position[0] - invader.position[0]) < INVADER_SIZE / 2 &&
+        Math.abs(missile.position[1] - invader.position[1]) < INVADER_SIZE / 2
+      )
+      if (isMissileHit) {
+        invader.alive = false
+        missile.alive = false
+      }
+    })
 
   const nextState = { ...state, laser, userAction, invader, missiles };
   return nextState;
