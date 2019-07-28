@@ -85,3 +85,21 @@ function translateY(y) {
   const scaleFactor = CANVAS_WIDTH / stateWidth
   return -scaleFactor * y + CANVAS_WIDTH / 2
 }
+function renderInvaderDev(ctx, invader) {
+  ctx.strokeStyle = invader.alive ? 'pink' : 'green'
+  const radius = INVADER_SIZE / 2 * CANVAS_WIDTH
+  const x = translateX(invader.position[0])
+  const y = translateY(invader.position[1])
+  // Body
+  ctx.beginPath()
+  ctx.ellipse(
+    x,
+    y,
+    radius,
+    radius,
+    0,
+    0,
+    2 * Math.PI
+  )
+  ctx.stroke()
+}
