@@ -1,6 +1,9 @@
-import { LASER_POSITION_Y, BOUNDARY, INVADER_SPACING } from "../config.json";
+import { LASER_POSITION_Y } from "../config.json";
 import { moveMissiles } from './moveMissiles.js'
 import { moveInvaders } from './moveInvaders.js'
+import { destroyPlayerMissiles } from './destroyPlayerMissiles.js'
+import { destroyInvaders } from './destroyInvaders.js'
+import { removeDeadMissiles } from './removeDeadMissiles.js'
 
 export function update(state, delta) {
   let { userAction, missiles, laser, invaders, invaderLastMove, invaderVelocity } = state;
@@ -23,55 +26,26 @@ export function update(state, delta) {
     userAction = "";
   }
 
-  missiles = moveMissiles(missiles, delta)
+  let nextMissiles = moveMissiles(missiles, delta)
   
-  const {
+  let {
     nextInvaders,
     nextInvaderVelocity,
     nextInvaderLastMove
   } = moveInvaders(invaders, invaderVelocity, invaderLastMove, delta)
 
-  // Detect missile hit, and destroy if needed
-  missiles
-    .filter(missile => missile.alive)
-    .forEach(missile => {
-      nextInvaders
-        .filter(invader => invader.alive)
-        .forEach(invader => {
-          if (isHit(missile, invader)) {
-            invader.alive = false;
-            missile.alive = false;
-          }
-        });
-    });
+  nextMissiles = destroyPlayerMissiles(nextMissiles, nextInvaders)
+  nextInvaders = destroyInvaders(nextMissiles, nextInvaders)
+  nextMissiles = removeDeadMissiles(nextMissiles)
 
   const nextState = {
     ...state,
     laser,
     userAction,
-    missiles,
+    missiles: nextMissiles,
     invaders: nextInvaders,
     invaderVelocity: nextInvaderVelocity,
     invaderLastMove: nextInvaderLastMove
   };
   return nextState;
-}
-
-function isHit(missile, invader) {
-  const hitArea = getHitArea(invader.type)
-  const distX = Math.abs(missile.position[0] - invader.position[0])
-  const distY = Math.abs(missile.position[1] - invader.position[1])
-  return (
-    distX < hitArea &&
-    distY < hitArea
-  )
-}
-
-function getHitArea(type) {
-  const typeToSizeMap = {
-    'small': 0.1,
-    'medium': 0.1,
-    'large': 0.1,
-  }
-  return typeToSizeMap[type]
 }
