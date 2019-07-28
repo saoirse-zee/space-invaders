@@ -8,7 +8,6 @@ export function initState() {
           position: [0, LASER_POSITION_Y],
           vx: 0
         },
-        invaderLastMove: Date.now(),
         invaders: initInvaders(),
         missiles: [],
         invaderVelocity: 0.005,

@@ -4,10 +4,10 @@ import { moveInvaders } from './moveInvaders'
 import { destroyPlayerMissiles } from './destroyPlayerMissiles'
 import { destroyInvaders } from './destroyInvaders'
 import { removeDeadMissiles } from './removeDeadMissiles'
-import { MOVE_BOOST } from '../config'
+import { MOVE_BOOST, INVADER_MOVE_INTERVAL } from '../config'
 
 export function update(state, delta) {
-  let { userAction, missiles, laser, invaders, invaderLastMove, invaderVelocity } = state;
+  let { userAction, missiles, laser, invaders, invaderVelocity, clock } = state;
 
   // Handle user input
   if (userAction === "right") {
@@ -46,25 +46,30 @@ export function update(state, delta) {
 
   let nextMissiles = moveMissiles(missiles, delta)
   
-  let {
-    nextInvaders,
-    nextInvaderVelocity,
-    nextInvaderLastMove
-  } = moveInvaders(invaders, invaderVelocity, invaderLastMove, delta)
-
+  let nextInvaders = invaders
+  let nextInvaderVelocity = invaderVelocity
+  const invadersShouldMove = clock > INVADER_MOVE_INTERVAL
+  if (invadersShouldMove) {
+     ({ nextInvaders, nextInvaderVelocity } = moveInvaders(invaders, invaderVelocity, delta))
+  } 
+  
   nextMissiles = destroyPlayerMissiles(nextMissiles, nextInvaders)
   nextInvaders = destroyInvaders(nextMissiles, nextInvaders)
   nextMissiles = removeDeadMissiles(nextMissiles)
+  
   const nextUserAction = ''
+  const nextClock = clock <= 100
+    ? clock + 1
+    : 0
 
   const nextState = {
     ...state,
+    clock: nextClock,
     laser: nextLaser,
     userAction: nextUserAction,
     missiles: nextMissiles,
     invaders: nextInvaders,
     invaderVelocity: nextInvaderVelocity,
-    invaderLastMove: nextInvaderLastMove
   };
   return nextState;
 }
