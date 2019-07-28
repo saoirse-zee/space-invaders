@@ -1,30 +1,48 @@
-import { LASER_POSITION_Y } from "../config";
+import { moveLaser } from './moveLaser'
 import { moveMissiles } from './moveMissiles'
 import { moveInvaders } from './moveInvaders'
 import { destroyPlayerMissiles } from './destroyPlayerMissiles'
 import { destroyInvaders } from './destroyInvaders'
 import { removeDeadMissiles } from './removeDeadMissiles'
+import { MOVE_BOOST } from '../config'
 
 export function update(state, delta) {
   let { userAction, missiles, laser, invaders, invaderLastMove, invaderVelocity } = state;
-  const MOVE_DISTANCE = 1 / (7 * 5)
 
   // Handle user input
-  if (state.userAction === "right") {
-    laser = laser + MOVE_DISTANCE;
-    userAction = "";
+  if (userAction === "right") {
+    return ({
+      ...state,
+      laser: {
+        ...laser,
+        vx: laser.vx + MOVE_BOOST,
+      },
+      userAction: ''
+    })
   }
-  if (state.userAction === "left") {
-    laser = laser - MOVE_DISTANCE;
-    userAction = "";
+  if (userAction === "left") {
+    return ({
+      ...state,
+      laser: {
+        ...laser,
+        vx: laser.vx - MOVE_BOOST,
+      },
+      userAction: ''
+    })
   }
-  if (state.userAction === "fire") {
+  if (userAction === "fire") {
     missiles.push({
-      position: [laser, LASER_POSITION_Y],
+      position: laser.position,
       alive: true
-    });
-    userAction = "";
+    })
+    return ({
+      ...state,
+      missiles,
+      userAction: ''
+    })
   }
+
+  const nextLaser = moveLaser(laser, delta);
 
   let nextMissiles = moveMissiles(missiles, delta)
   
@@ -37,11 +55,12 @@ export function update(state, delta) {
   nextMissiles = destroyPlayerMissiles(nextMissiles, nextInvaders)
   nextInvaders = destroyInvaders(nextMissiles, nextInvaders)
   nextMissiles = removeDeadMissiles(nextMissiles)
+  const nextUserAction = ''
 
   const nextState = {
     ...state,
-    laser,
-    userAction,
+    laser: nextLaser,
+    userAction: nextUserAction,
     missiles: nextMissiles,
     invaders: nextInvaders,
     invaderVelocity: nextInvaderVelocity,
