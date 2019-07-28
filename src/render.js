@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING, INVADER_SIZE } from './config.json'
+import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING, INVADER_SIZE, MISSILE_SIZE, LASER_SIZE, LASER_POSITION_Y } from './config.json'
 
 export function canvas() {
   const element = document.createElement('canvas')
@@ -24,60 +24,64 @@ function clearCanvas(ctx) {
 }
 function renderLaser(ctx, laser) {
   ctx.fillStyle = 'white';
-  const SIZE = 10
-  const left = translateX(laser) - SIZE / 2;
-  const top = translateY(0) - SIZE / 2;
+  const renderSize = LASER_SIZE * CANVAS_WIDTH
+  const left = translateX(laser) - renderSize / 2;
+  const top = translateY(LASER_POSITION_Y) - renderSize / 2;
   ctx.fillRect(
     left,
     top,
-    SIZE,
-    SIZE,
+    renderSize,
+    renderSize,
   );
 }
 function renderMissile(ctx, missile) {
   ctx.fillStyle = missile.alive ? 'white' : '#222'
-  const SIZE = 10
-  const left = translateX(missile.position[0]) - SIZE / 2;
-  const top = translateY(missile.position[1]) - SIZE / 2;
+  const renderSize = MISSILE_SIZE * CANVAS_WIDTH
+  const left = translateX(missile.position[0]) - renderSize / 2;
+  const top = translateY(missile.position[1]) - renderSize / 2;
   ctx.fillRect(
     left,
     top,
-    SIZE,
-    SIZE,
+    renderSize,
+    renderSize,
   );
 }
 function renderInvader(ctx, invader) {
   ctx.fillStyle = invader.alive ? 'white' : '#222'
-  const SIZE = 30;
-  const left = translateX(invader.position[0]) - INVADER_SIZE / 2;
-  const top = translateY(invader.position[1]) - INVADER_SIZE / 2;
+  const renderSize = INVADER_SIZE * CANVAS_WIDTH
+  const left = translateX(invader.position[0]) - renderSize / 2;
+  const top = translateY(invader.position[1]) - renderSize / 2;
   
   // Body
   ctx.fillRect(
     left,
     top,
-    SIZE,
-    SIZE
+    renderSize,
+    renderSize
   );
   
   // Eyes
   ctx.fillStyle = 'black'
   ctx.fillRect(
-    left + SIZE / 6,
-    top + SIZE / 3,
-    SIZE / 6,
-    SIZE / 6,
+    left + renderSize / 6,
+    top + renderSize / 3,
+    renderSize / 6,
+    renderSize / 6,
   );
   ctx.fillRect(
-    left + SIZE / 6 * 4,
-    top + SIZE / 3,
-    SIZE / 6,
-    SIZE / 6,
+    left + renderSize / 6 * 4,
+    top + renderSize / 3,
+    renderSize / 6,
+    renderSize / 6,
   );
 }
 function translateX(x) {
-  return x + CANVAS_WIDTH / 2
+  const stateWidth = 2
+  const scaleFactor = CANVAS_WIDTH / stateWidth
+  return scaleFactor * x + CANVAS_WIDTH / 2
 }
 function translateY(y) {
-  return CANVAS_HEIGHT - y
+  const stateWidth = 2
+  const scaleFactor = CANVAS_WIDTH / stateWidth
+  return -scaleFactor * y + CANVAS_WIDTH / 2
 }

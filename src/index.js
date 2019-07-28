@@ -1,36 +1,15 @@
 import { canvas, render } from './render.js'
 import { update } from './update.js'
+import { initState } from './init.js'
 import { log } from './log.js'
 
+let state = initState()
 document.body.appendChild(canvas())
-
 const { requestAnimationFrame } = window
-
-let state = {
-    userAction: '',
-    clock: 0,
-    laser: 0,
-    invaderLastMove: Date.now(),
-    invader: {
-        position: [-120, 450], 
-        alive: true,
-    },
-    invaders: [
-        {
-            position: [-120, 250],
-            alive: true,
-        },
-        {
-            position: [120, 250],
-            alive: true,
-        },
-    ],
-    missiles: [],
-}
-
 let lastStepTimestamp = 0
 let delta = 0
 const TIMESTEP = 1000 / 60
+
 function step(timestamp = 0) {
     delta += timestamp - lastStepTimestamp
     lastStepTimestamp = timestamp
@@ -38,7 +17,7 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    log(state)
+    // log(state)
     render(state);
     requestAnimationFrame(step)
 }

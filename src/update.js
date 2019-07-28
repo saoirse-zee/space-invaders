@@ -1,19 +1,20 @@
-import { MISSILE_VELOCITY, INVADER_SIZE } from "./config.json";
+import { MISSILE_VELOCITY, INVADER_SIZE, LASER_POSITION_Y } from "./config.json";
 
 export function update(state, delta) {
   let { userAction, missiles, laser, invaders, invaderLastMove } = state;
+  const MOVE_DISTANCE = 1 / (7 * 5)
 
   if (state.userAction === "right") {
-    laser = laser + 10;
+    laser = laser + MOVE_DISTANCE;
     userAction = "";
   }
   if (state.userAction === "left") {
-    laser = laser - 10;
+    laser = laser - MOVE_DISTANCE;
     userAction = "";
   }
   if (state.userAction === "fire") {
     missiles.push({
-      position: [laser, 0],
+      position: [laser, LASER_POSITION_Y],
       alive: true
     });
     userAction = "";
@@ -27,10 +28,11 @@ export function update(state, delta) {
   const now = Date.now();
   const invaderShouldMove = now - state.invaderLastMove > 1000;
   let nextInvaders = invaders;
+  
   if (invaderShouldMove) {
     nextInvaders = invaders.map(invader => ({
       ...invader,
-      position: [invader.position[0] + 5, invader.position[1]]
+      position: [invader.position[0] + MOVE_DISTANCE, invader.position[1]]
     }));
     invaderLastMove = now;
   }
@@ -39,17 +41,14 @@ export function update(state, delta) {
   missiles
     .filter(missile => missile.alive)
     .forEach(missile => {
-      nextInvaders.forEach(invader => {
-        const isMissileHit =
-          Math.abs(missile.position[0] - invader.position[0]) <
-            INVADER_SIZE / 2 &&
-          Math.abs(missile.position[1] - invader.position[1]) <
-            INVADER_SIZE / 2;
-        if (isMissileHit) {
-          invader.alive = false;
-          missile.alive = false;
-        }
-      });
+      nextInvaders
+        .filter(invader => invader.alive)
+        .forEach(invader => {
+          if (isHit(missile, invader)) {
+            invader.alive = false;
+            missile.alive = false;
+          }
+        });
     });
 
   const nextState = {
@@ -61,4 +60,23 @@ export function update(state, delta) {
     invaderLastMove
   };
   return nextState;
+}
+
+function isHit(missile, invader) {
+  const hitArea = getHitArea(invader.type)
+  const distX = Math.abs(missile.position[0] - invader.position[0])
+  const distY = Math.abs(missile.position[1] - invader.position[1])
+  return (
+    distX < hitArea &&
+    distY < hitArea
+  )
+}
+
+function getHitArea(type) {
+  const typeToSizeMap = {
+    'small': 0.1,
+    'medium': 0.1,
+    'large': 0.1,
+  }
+  return typeToSizeMap[type]
 }
