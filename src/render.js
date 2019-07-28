@@ -1,15 +1,7 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING, INVADER_SIZE, MISSILE_SIZE, LASER_SIZE, LASER_POSITION_Y } from './config.json'
 
-export function canvas() {
-  const element = document.createElement('canvas')
-  element.setAttribute('id', 'gameboard')
-  element.setAttribute('width', CANVAS_WIDTH + CANVAS_PADDING)
-  element.setAttribute('height', CANVAS_HEIGHT + CANVAS_PADDING)
-  return element
-}
-
 export function render(state) {
-  const canvas = document.getElementById('gameboard');
+  const canvas = document.getElementsByTagName('canvas')[0]
   const ctx = canvas.getContext('2d');
   
   clearCanvas(ctx);

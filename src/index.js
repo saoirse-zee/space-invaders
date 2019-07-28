@@ -1,10 +1,11 @@
-import { canvas, render } from './render.js'
+import { render } from './render.js'
+import { canvas } from './html/canvas'
 import { update } from './update'
 import { initState } from './init.js'
-import { log } from './log.js'
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from './config.json'
 
 let state = initState()
-document.body.appendChild(canvas())
+document.body.appendChild(canvas(CANVAS_WIDTH, CANVAS_HEIGHT))
 const { requestAnimationFrame } = window
 let lastStepTimestamp = 0
 let delta = 0
