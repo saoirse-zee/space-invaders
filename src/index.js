@@ -1,5 +1,5 @@
 import { canvas, render } from './render.js'
-import { update } from './update.js'
+import { update } from './update'
 import { initState } from './init.js'
 import { log } from './log.js'
 
