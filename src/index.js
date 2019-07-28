@@ -1,4 +1,4 @@
-import { render } from './render.js'
+import { render } from './render'
 import { canvas } from './html/canvas'
 import { logger } from './html/logger'
 import { update } from './update'
