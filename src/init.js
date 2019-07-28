@@ -1,3 +1,5 @@
+import { INVADER_SPACING } from './config.json'
+
 export function initState() {
     return {
         userAction: '',
@@ -6,30 +8,31 @@ export function initState() {
         invaderLastMove: Date.now(),
         invaders: initInvaders(),
         missiles: [],
+        invaderVelocity: 0.005,
     };
 }
 
 function initInvaders() {
   const invaders = []
-  const spacing = 1 / 7
   
   for (let i = 0; i < 5; i++) {
-    const y = spacing * i
-    for (let i = 1; i <= 5; i++) {
-      const x = spacing * i
+    const y = INVADER_SPACING * i
+    const offset = i / 500; // To make the velocity switch work 🤷🏻‍♀️
+    for (let j = 1; j <= 5; j++) {
+      const x = INVADER_SPACING * j
       invaders.push({
-        position: [x,y],
+        position: [x + offset,y],
         alive: true,
         type: getType(i)
       })
       invaders.push({
-        position: [-x,y],
+        position: [-x + offset,y],
         alive: true,
-        type: getType(i)
+        type: getType(j)
       })
     }
     invaders.push({
-      position: [0,y],
+      position: [offset,y],
       alive: true,
       type: getType(i)
     })

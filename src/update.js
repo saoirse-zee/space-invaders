@@ -1,9 +1,10 @@
-import { MISSILE_VELOCITY, INVADER_SIZE, LASER_POSITION_Y } from "./config.json";
+import { MISSILE_VELOCITY, LASER_POSITION_Y, BOUNDARY, INVADER_SPACING } from "./config.json";
 
 export function update(state, delta) {
-  let { userAction, missiles, laser, invaders, invaderLastMove } = state;
+  let { userAction, missiles, laser, invaders, invaderLastMove, invaderVelocity } = state;
   const MOVE_DISTANCE = 1 / (7 * 5)
 
+  // Handle user input
   if (state.userAction === "right") {
     laser = laser + MOVE_DISTANCE;
     userAction = "";
@@ -20,24 +21,49 @@ export function update(state, delta) {
     userAction = "";
   }
 
+  // Move missiles
   missiles = missiles.map(m => ({
     ...m,
     position: [m.position[0], m.position[1] + MISSILE_VELOCITY * delta]
   }));
 
-  const now = Date.now();
-  const invaderShouldMove = now - state.invaderLastMove > 1000;
-  let nextInvaders = invaders;
+  const invadersShouldSwitchDirection = 
+    invaders
+      .filter(invader => invader.alive)
+      .reduce((result, invader) => {
+        const nearLeftWall = invader.position[0] < -BOUNDARY;
+        const movingLeft = invaderVelocity < 0;
+        if (nearLeftWall && movingLeft) {
+          return true
+        }
+        const nearRightWall = invader.position[0] > BOUNDARY;
+        const movingRight = invaderVelocity > 0;
+        if (nearRightWall && movingRight) {
+          return true
+        }
+        return result
+      }, false)
   
-  if (invaderShouldMove) {
+      
+  // Move invaders
+  const now = Date.now();
+  const invadersShouldMove = now - state.invaderLastMove > 1000;
+  let nextInvaders = invaders;
+  if (invadersShouldMove) {
+    invaderVelocity = invadersShouldSwitchDirection ? -invaderVelocity : invaderVelocity
+    const distX = invadersShouldSwitchDirection ? 0 : invaderVelocity * delta
+    const distY = invadersShouldSwitchDirection ? -INVADER_SPACING : 0
     nextInvaders = invaders.map(invader => ({
       ...invader,
-      position: [invader.position[0] + MOVE_DISTANCE, invader.position[1]]
+      position: [
+        invader.position[0] + distX,
+        invader.position[1] + distY,
+      ]
     }));
     invaderLastMove = now;
   }
 
-  // Detect missile hit
+  // Detect missile hit, and destroy if needed
   missiles
     .filter(missile => missile.alive)
     .forEach(missile => {
@@ -57,7 +83,8 @@ export function update(state, delta) {
     userAction,
     invaders: nextInvaders,
     missiles,
-    invaderLastMove
+    invaderLastMove,
+    invaderVelocity
   };
   return nextState;
 }
