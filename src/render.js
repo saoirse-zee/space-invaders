@@ -1,6 +1,7 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING, INVADER_SIZE, MISSILE_SIZE, LASER_SIZE, LASER_POSITION_Y } from './config.json'
 
 export function render(state) {
+  renderLog(state)
   const canvas = document.getElementsByTagName('canvas')[0]
   const ctx = canvas.getContext('2d');
   
@@ -94,4 +95,9 @@ function renderInvaderDev(ctx, invader) {
     2 * Math.PI
   )
   ctx.stroke()
+}
+
+function renderLog(content) {
+  const logger = document.getElementById('logger')
+  logger.innerHTML = JSON.stringify(content, null, 2).slice(0, 200) + '···'
 }

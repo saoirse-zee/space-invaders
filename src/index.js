@@ -1,11 +1,13 @@
 import { render } from './render.js'
 import { canvas } from './html/canvas'
+import { logger } from './html/logger'
 import { update } from './update'
 import { initState } from './init.js'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './config.json'
 
 let state = initState()
 document.body.appendChild(canvas(CANVAS_WIDTH, CANVAS_HEIGHT))
+document.body.appendChild(logger())
 const { requestAnimationFrame } = window
 let lastStepTimestamp = 0
 let delta = 0
@@ -18,7 +20,6 @@ function step(timestamp = 0) {
         state = update(state, TIMESTEP);
         delta -= TIMESTEP
     }
-    // log(state)
     render(state);
     requestAnimationFrame(step)
 }
