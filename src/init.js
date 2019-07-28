@@ -1,4 +1,4 @@
-import { INVADER_SPACING } from './config.json'
+import { INVADER_SPACING } from './config'
 
 export function initState() {
     return {

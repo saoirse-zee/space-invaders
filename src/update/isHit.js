@@ -1,4 +1,4 @@
-import { INVADER_SIZE } from '../config.json'
+import { INVADER_SIZE } from '../config'
 
 /**
  * 

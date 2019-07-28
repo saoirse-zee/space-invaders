@@ -1,4 +1,4 @@
-import { MISSILE_VELOCITY } from '../config.json'
+import { MISSILE_VELOCITY } from '../config'
 
 export function moveMissiles(missiles, delta) {
   return missiles.map(m => ({

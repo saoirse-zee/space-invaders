@@ -1,4 +1,4 @@
-import { CANVAS_WIDTH, INVADER_SIZE } from '../config.json'
+import { CANVAS_WIDTH, INVADER_SIZE } from '../config'
 import { translateX, translateY } from './utils'
 
 export function renderInvader(ctx, invader) {

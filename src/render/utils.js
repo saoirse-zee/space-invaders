@@ -1,4 +1,4 @@
-import { CANVAS_WIDTH } from '../config.json'
+import { CANVAS_WIDTH } from '../config'
 
 export function translateX(x) {
   const stateWidth = 2

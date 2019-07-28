@@ -1,4 +1,4 @@
-import { CANVAS_WIDTH, LASER_SIZE, LASER_POSITION_Y } from '../config.json'
+import { CANVAS_WIDTH, LASER_SIZE, LASER_POSITION_Y } from '../config'
 import { translateX, translateY } from './utils'
 
 export function renderLaser(ctx, laser) {

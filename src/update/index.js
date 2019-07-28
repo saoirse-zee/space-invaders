@@ -1,9 +1,9 @@
-import { LASER_POSITION_Y } from "../config.json";
-import { moveMissiles } from './moveMissiles.js'
-import { moveInvaders } from './moveInvaders.js'
-import { destroyPlayerMissiles } from './destroyPlayerMissiles.js'
-import { destroyInvaders } from './destroyInvaders.js'
-import { removeDeadMissiles } from './removeDeadMissiles.js'
+import { LASER_POSITION_Y } from "../config";
+import { moveMissiles } from './moveMissiles'
+import { moveInvaders } from './moveInvaders'
+import { destroyPlayerMissiles } from './destroyPlayerMissiles'
+import { destroyInvaders } from './destroyInvaders'
+import { removeDeadMissiles } from './removeDeadMissiles'
 
 export function update(state, delta) {
   let { userAction, missiles, laser, invaders, invaderLastMove, invaderVelocity } = state;

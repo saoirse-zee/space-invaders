@@ -2,8 +2,8 @@ import { render } from './render'
 import { canvas } from './html/canvas'
 import { logger } from './html/logger'
 import { update } from './update'
-import { initState } from './init.js'
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from './config.json'
+import { initState } from './init'
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from './config'
 
 let state = initState()
 document.body.appendChild(canvas(CANVAS_WIDTH, CANVAS_HEIGHT))

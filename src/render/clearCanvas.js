@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING } from '../config.json'
+import { CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_PADDING } from '../config'
 
 export function clearCanvas(ctx) {
   ctx.fillStyle = 'black';

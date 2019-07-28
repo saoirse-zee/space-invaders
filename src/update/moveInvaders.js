@@ -1,4 +1,4 @@
-import { BOUNDARY, INVADER_SPACING } from '../config.json'
+import { BOUNDARY, INVADER_SPACING } from '../config'
 
 export function moveInvaders(invaders, invaderVelocity, invaderLastMove, delta) {
   const invadersShouldSwitchDirection = 
