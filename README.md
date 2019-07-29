@@ -4,6 +4,8 @@ Space Invaders in vanilla JavaScript.
 
 I used [this guide](http://www.classicgaming.cc/classics/space-invaders/play-guide) to help set the specs for the feature set. See [the features list](./features.md), which is basically a roadmap for this project. So far, I've only done one of the dozens of features!!
 
+It's deployed [here](https://space-invaderz.netlify.com/). Give it a whirl!
+
 ## Getting started
 
 Install dependencies:
