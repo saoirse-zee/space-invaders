@@ -1,20 +1,6 @@
-import { INVADER_SPACING, LASER_POSITION_Y } from "./config";
+import { INVADER_SPACING } from "../config";
 
-export function initState() {
-  return {
-    userAction: "",
-    clock: 0,
-    laser: {
-      position: [0, LASER_POSITION_Y],
-      vx: 0
-    },
-    invaders: initInvaders(),
-    missiles: [],
-    invaderVelocity: 0.005
-  };
-}
-
-function initInvaders() {
+export function initInvaders() {
   const invaders = [];
 
   for (let i = 0; i < 5; i++) {

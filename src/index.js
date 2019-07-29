@@ -1,15 +1,10 @@
 import { render } from "./render";
-import { canvas } from "./html/canvas";
-import { logger } from "./html/logger";
 import { update } from "./update";
-import { initState } from "./init";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./config";
+import { initState } from "./init/initState";
+import { initCanvas } from "./init/initCanvas";
+import { initHandlers } from "./init/initHandlers";
 
-let state = initState();
-
-document.body.style.backgroundColor = "black";
-document.body.appendChild(canvas(CANVAS_WIDTH, CANVAS_HEIGHT));
-document.body.appendChild(logger());
+export let state = initState();
 
 const { requestAnimationFrame } = window;
 let lastStepTimestamp = 0;
@@ -27,17 +22,6 @@ function step(timestamp = 0) {
   requestAnimationFrame(step);
 }
 
-// Handlers
-document.body.addEventListener("keydown", function(event) {
-  if (event.keyCode === 37) {
-    state.userAction = "left";
-  }
-  if (event.keyCode === 39) {
-    state.userAction = "right";
-  }
-  if (event.keyCode === 32) {
-    state.userAction = "fire";
-  }
-});
-
+initCanvas();
+initHandlers();
 step();
