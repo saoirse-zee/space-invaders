@@ -48,7 +48,7 @@ export function update(state, delta) {
 
   let nextInvaders = invaders;
   let nextInvaderVelocity = invaderVelocity;
-  const invadersShouldMove = clock > INVADER_MOVE_INTERVAL;
+  const invadersShouldMove = clock % INVADER_MOVE_INTERVAL === 0;
   if (invadersShouldMove) {
     ({ nextInvaders, nextInvaderVelocity } = moveInvaders(
       invaders,
@@ -62,7 +62,7 @@ export function update(state, delta) {
   nextMissiles = removeDeadMissiles(nextMissiles);
 
   const nextUserAction = "";
-  const nextClock = clock <= 100 ? clock + 1 : 0;
+  const nextClock = clock + 1;
 
   const nextState = {
     ...state,
