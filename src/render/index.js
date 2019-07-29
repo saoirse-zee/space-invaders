@@ -5,7 +5,7 @@ import { renderInvader } from "./renderInvader";
 import { renderLog } from "./renderLog";
 
 export function render(state) {
-  renderLog(state);
+  renderLog(state, false);
 
   const canvas = document.getElementsByTagName("canvas")[0];
   const ctx = canvas.getContext("2d");
