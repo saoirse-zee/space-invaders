@@ -17,6 +17,12 @@ npm start
 ```
 This should open the app in a browser, but if it doesn't, take a look at http://localhost:8080/
 
+Lint the code:
+```
+npm run lint
+```
+This checks for a (very few) usage rules, and then enforces a code style using Prettier. My philosophy is to keep the linting very simple. I'll add more linting rules if and when they solve a problem that I'm actually having. 
+
 
 Build for production:
 ```

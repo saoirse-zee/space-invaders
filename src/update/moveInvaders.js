@@ -8,7 +8,7 @@ export function moveInvaders(invaders, invaderVelocity, delta) {
       const movingLeft = invaderVelocity < 0;
       const nearRightWall = invader.position[0] > BOUNDARY;
       const movingRight = invaderVelocity > 0;
-      
+
       if (nearLeftWall && movingLeft) {
         return true;
       }
@@ -30,8 +30,8 @@ export function moveInvaders(invaders, invaderVelocity, delta) {
     ...invader,
     position: [invader.position[0] + distX, invader.position[1] + distY]
   }));
-  return ({
+  return {
     nextInvaders,
     nextInvaderVelocity
-  })
+  };
 }

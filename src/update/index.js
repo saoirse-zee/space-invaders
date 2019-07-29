@@ -1,66 +1,68 @@
-import { moveLaser } from './moveLaser'
-import { moveMissiles } from './moveMissiles'
-import { moveInvaders } from './moveInvaders'
-import { destroyPlayerMissiles } from './destroyPlayerMissiles'
-import { destroyInvaders } from './destroyInvaders'
-import { removeDeadMissiles } from './removeDeadMissiles'
-import { MOVE_BOOST, INVADER_MOVE_INTERVAL } from '../config'
+import { moveLaser } from "./moveLaser";
+import { moveMissiles } from "./moveMissiles";
+import { moveInvaders } from "./moveInvaders";
+import { destroyPlayerMissiles } from "./destroyPlayerMissiles";
+import { destroyInvaders } from "./destroyInvaders";
+import { removeDeadMissiles } from "./removeDeadMissiles";
+import { MOVE_BOOST, INVADER_MOVE_INTERVAL } from "../config";
 
 export function update(state, delta) {
   let { userAction, missiles, laser, invaders, invaderVelocity, clock } = state;
 
   // Handle user input
   if (userAction === "right") {
-    return ({
+    return {
       ...state,
       laser: {
         ...laser,
-        vx: laser.vx + MOVE_BOOST,
+        vx: laser.vx + MOVE_BOOST
       },
-      userAction: ''
-    })
+      userAction: ""
+    };
   }
   if (userAction === "left") {
-    return ({
+    return {
       ...state,
       laser: {
         ...laser,
-        vx: laser.vx - MOVE_BOOST,
+        vx: laser.vx - MOVE_BOOST
       },
-      userAction: ''
-    })
+      userAction: ""
+    };
   }
   if (userAction === "fire") {
     missiles.push({
       position: laser.position,
       alive: true
-    })
-    return ({
+    });
+    return {
       ...state,
       missiles,
-      userAction: ''
-    })
+      userAction: ""
+    };
   }
 
   const nextLaser = moveLaser(laser, delta);
 
-  let nextMissiles = moveMissiles(missiles, delta)
-  
-  let nextInvaders = invaders
-  let nextInvaderVelocity = invaderVelocity
-  const invadersShouldMove = clock > INVADER_MOVE_INTERVAL
+  let nextMissiles = moveMissiles(missiles, delta);
+
+  let nextInvaders = invaders;
+  let nextInvaderVelocity = invaderVelocity;
+  const invadersShouldMove = clock > INVADER_MOVE_INTERVAL;
   if (invadersShouldMove) {
-     ({ nextInvaders, nextInvaderVelocity } = moveInvaders(invaders, invaderVelocity, delta))
-  } 
-  
-  nextMissiles = destroyPlayerMissiles(nextMissiles, nextInvaders)
-  nextInvaders = destroyInvaders(nextMissiles, nextInvaders)
-  nextMissiles = removeDeadMissiles(nextMissiles)
-  
-  const nextUserAction = ''
-  const nextClock = clock <= 100
-    ? clock + 1
-    : 0
+    ({ nextInvaders, nextInvaderVelocity } = moveInvaders(
+      invaders,
+      invaderVelocity,
+      delta
+    ));
+  }
+
+  nextMissiles = destroyPlayerMissiles(nextMissiles, nextInvaders);
+  nextInvaders = destroyInvaders(nextMissiles, nextInvaders);
+  nextMissiles = removeDeadMissiles(nextMissiles);
+
+  const nextUserAction = "";
+  const nextClock = clock <= 100 ? clock + 1 : 0;
 
   const nextState = {
     ...state,
@@ -69,7 +71,7 @@ export function update(state, delta) {
     userAction: nextUserAction,
     missiles: nextMissiles,
     invaders: nextInvaders,
-    invaderVelocity: nextInvaderVelocity,
+    invaderVelocity: nextInvaderVelocity
   };
   return nextState;
 }
