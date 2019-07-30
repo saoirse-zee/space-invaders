@@ -18,7 +18,7 @@ export function renderInvader(ctx, invader, clock, i) {
 
     // Body
     ctx.fillStyle = `hsla(46, 10%, 10%)`;
-    const baseRadius = INVADER_SIZE * CANVAS_WIDTH;
+    const baseRadius = (INVADER_SIZE * CANVAS_WIDTH) / 2;
     ctx.beginPath();
     ctx.ellipse(x, y, baseRadius, baseRadius, rotation, 0, Math.PI * 2);
     ctx.fill();
@@ -42,10 +42,11 @@ export function renderInvader(ctx, invader, clock, i) {
 
   function renderEye(x, y, clock) {
     ctx.fillStyle = `hsla(333, 100%, 100%, 0.7)`;
-    const pathLength = INVADER_SIZE * CANVAS_WIDTH * 0.8; // Stay within bounds of body
+    const baseRadius = (INVADER_SIZE * CANVAS_WIDTH) / 2;
+    const pathLength = baseRadius * 0.8; // Stay within bounds of body
     const offsetX = Math.sin(clock / 30) * pathLength;
     const offsetY = (Math.cos(clock / 50) * pathLength) / 3;
-    const radius = (INVADER_SIZE * CANVAS_WIDTH) / 5;
+    const radius = baseRadius / 5;
     const rotation = 0;
     const startAngle = 0;
     const endAngle = Math.PI * 2;
