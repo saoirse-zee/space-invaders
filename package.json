@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --open",
+    "test": "npm run lint",
     "lint": "eslint src/*.js src/**/*.js"
   },
   "keywords": [],
