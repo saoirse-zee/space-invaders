@@ -38,3 +38,5 @@ Use the arrow keys to move your laser left and right. Hit the spacebar to fire a
 ## Design
 
 My goal is to stick to basic JavaScript. No frameworks, no libraries. I'm using Webpack, but added nothing beyond the most basic loaders needed to compile the js and html.
+
+...
